@@ -2,7 +2,7 @@ const GITHUB_API = "https://api.github.com";
 const REPO_OWNER = "BOURNE41010"; // แทนที่ด้วยชื่อผู้ใช้ GitHub
 const REPO_NAME = "mail-statistics";
 const FILE_PATH = "data.json";
-const TOKEN = "YOUR_PERSONAL_ACCESS_TOKEN"; // ใช้ Personal Access Token
+const TOKEN = "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"; // ใช้ Personal Access Token
 
 // ดึงข้อมูลจาก GitHub
 async function fetchData() {
