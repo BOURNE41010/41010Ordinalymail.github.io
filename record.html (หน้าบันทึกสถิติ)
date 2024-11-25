@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บันทึกสถิติ</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>ระบบจัดเก็บสถิติปริมาณงานจดหมาย</h1>
+        <h2 id="selectedName"></h2>
+    </header>
+    <main>
+        <section class="input-section">
+            <h2>เพิ่มข้อมูล</h2>
+            <form id="dataForm">
+                <label for="line">สายงาน:</label>
+                <select id="line" required>
+                    <option value="" disabled selected>เลือกสายงาน</option>
+                </select>
+                
+                <label for="date">วันที่:</label>
+                <select id="date" required>
+                    <option value="" disabled selected>เลือกวันที่</option>
+                </select>
+                
+                <label for="quantity">ปริมาณงาน:</label>
+                <input type="number" id="quantity" min="0" required>
+                
+                <button type="submit">เพิ่มข้อมูล</button>
+            </form>
+        </section>
+        
+        <section class="dashboard-section">
+            <h2>Dashboard</h2>
+            <canvas id="lineChart"></canvas>
+        </section>
+    </main>
+    <script>
+        // ดึงชื่อที่เลือกจาก LocalStorage
+        const selectedName = localStorage.getItem('selectedName');
+        document.getElementById('selectedName').textContent = `ชื่อที่เลือก: ${selectedName}`;
+
+        // โค้ดส่วนเดิมสำหรับจัดการข้อมูลและกราฟ
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('dataForm');
+            const lineSelect = document.getElementById('line');
+            const dateSelect = document.getElementById('date');
+            const chartCanvas = document.getElementById('lineChart');
+            let data = {};
+
+            // Generate Line and Date options
+            for (let i = 1; i <= 10; i++) {
+                lineSelect.innerHTML += `<option value="${i}">สาย ${i}</option>`;
+            }
+
+            for (let i = 1; i <= 30; i++) {
+                dateSelect.innerHTML += `<option value="${i}">วันที่ ${i}</option>`;
+            }
+
+            // Handle Form Submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const line = lineSelect.value;
+                const date = dateSelect.value;
+                const quantity = parseInt(document.getElementById('quantity').value);
+
+                if (!data[line]) data[line] = Array(30).fill(0);
+                data[line][date - 1] += quantity;
+
+                updateChart();
+                form.reset();
+            });
+
+            // Initialize Chart
+            const chart = new Chart(chartCanvas, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: 30 }, (_, i) => `วันที่ ${i + 1}`),
+                    datasets: [],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                },
+            });
+
+            // Update Chart
+            function updateChart() {
+                chart.data.datasets = Object.keys(data).map(line => ({
+                    label: `สาย ${line}`,
+                    data: data[line],
+                    borderColor: getRandomColor(),
+                    fill: false,
+                }));
+                chart.update();
+            }
+
+            // Helper: Random Color
+            function getRandomColor() {
+                const r = Math.floor(Math.random() * 256);
+                const g = Math.floor(Math.random() * 256);
+                const b = Math.floor(Math.random() * 256);
+                return `rgb(${r}, ${g}, ${b})`;
+            }
+        });
+    </script>
+</body>
+</html>
