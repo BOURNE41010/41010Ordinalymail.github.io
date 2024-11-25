@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Name</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Select Your Name</h1>
+  <div id="name-selection">
+    <button onclick="selectName('A')">A</button>
+    <button onclick="selectName('B')">B</button>
+    <button onclick="selectName('C')">C</button>
+    <button onclick="selectName('D')">D</button>
+    <button onclick="selectName('E')">E</button>
+  </div>
+  <script>
+    function selectName(name) {
+      localStorage.setItem("selectedName", name);
+      window.location.href = "record.html";
+    }
+  </script>
+</body>
+</html>

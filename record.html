@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record Data</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Record Data for <span id="userName"></span></h1>
+  <form id="dataForm">
+    <label for="province">Province:</label>
+    <select id="province" required>
+      <option value="Udon">Udon</option>
+      <option value="Nongbua">Nongbua</option>
+      <option value="Nongkhai">Nongkhai</option>
+      <option value="Loei">Loei</option>
+    </select>
+    <label for="date">Date:</label>
+    <input type="number" id="date" min="1" max="30" required>
+    <label for="quantity">Quantity:</label>
+    <input type="number" id="quantity" required>
+    <button type="submit">Submit</button>
+  </form>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const name = localStorage.getItem("selectedName");
+      if (!name) {
+        alert("Please select your name first!");
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("userName").textContent = name;
+      }
+    });
+  </script>
+</body>
+</html>

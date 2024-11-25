@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Statistics Dashboard</h1>
+  <canvas id="chart"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+  <script>
+    async function loadDashboard() {
+      const { json: data } = await fetchData();
+      const chartData = Object.keys(data).map((name) => ({
+        label: name,
+        data: data[name].map((entry) => entry.quantity),
+        borderColor: getRandomColor(),
+        fill: false,
+      }));
+
+      new Chart(document.getElementById("chart"), {
+        type: "line",
+        data: {
+          labels: Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`),
+          datasets: chartData,
+        },
+        options: { responsive: true },
+      });
+    }
+
+    function getRandomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgb(${r}, ${g}, ${b})`;
+    }
+
+    document.addEventListener("DOMContentLoaded", loadDashboard);
+  </script>
+</body>
+</html>
